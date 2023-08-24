@@ -26,7 +26,7 @@ export function Provider(props: { children: ReactNode }) {
   const [user, setUser] = useState<UserModel.Model | null>(null);
   const router = useRouter();
 
-  async function loadUser() {
+  async function findUser() {
     const token = cookie.get("@my-app/token");
     if (token) {
       api.setHeader("Authorization", `Bearer ${token}`);
@@ -54,7 +54,7 @@ export function Provider(props: { children: ReactNode }) {
   }
 
   useEffect(function () {
-    loadUser();
+    findUser();
   }, []);
 
   if (isLoading) {
