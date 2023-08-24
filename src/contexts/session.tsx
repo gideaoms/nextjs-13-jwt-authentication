@@ -13,6 +13,8 @@ import * as UserMapper from "@/mappers/user";
 import { api } from "@/libs/api";
 import { useRouter } from "next/navigation";
 
+const cookie = new Cookie();
+
 const Context = createContext<{
   user: UserModel.Model | null;
   signIn: (user: UserModel.Model) => void;
@@ -25,7 +27,6 @@ export function Provider(props: { children: ReactNode }) {
   const router = useRouter();
 
   async function loadUser() {
-    const cookie = new Cookie();
     const token = cookie.get("@my-app/token");
     if (token) {
       api.setHeader("Authorization", `Bearer ${token}`);
@@ -42,14 +43,12 @@ export function Provider(props: { children: ReactNode }) {
 
   function signIn(user: UserModel.Model) {
     api.setHeader("Authorization", `Bearer ${user.token}`);
-    const cookie = new Cookie();
     cookie.set("@my-app/token", user.token);
     setUser(user);
     router.push("/");
   }
 
   function signOut() {
-    const cookie = new Cookie();
     cookie.remove("@my-app/token");
     router.push("/sign-in");
   }
