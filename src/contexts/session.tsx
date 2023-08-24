@@ -41,6 +41,7 @@ export function Provider(props: { children: ReactNode }) {
   }
 
   function signIn(user: UserModel.Model) {
+    api.setHeader("Authorization", `Bearer ${user.token}`);
     const cookie = new Cookie();
     cookie.set("@my-app/token", user.token);
     setUser(user);
