@@ -6,10 +6,11 @@ const publicUrls = ["/sign-in"];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("@my-app/token")?.value;
-  if (token && publicUrls.includes(pathname)) {
+  const isPublicUrl = publicUrls.includes(pathname);
+  if (token && isPublicUrl) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-  if (!token && !publicUrls.includes(pathname)) {
+  if (!token && !isPublicUrl) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
   return NextResponse.next();
