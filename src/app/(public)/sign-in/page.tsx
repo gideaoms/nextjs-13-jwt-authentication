@@ -1,21 +1,20 @@
 "use client";
 
-import { useSession } from "@/contexts/session";
+import * as SessionContext from "@/contexts/session";
 import { api } from "@/libs/api";
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 import * as UserMapper from "@/mappers/user";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const session = useSession();
-  const router = useRouter();
+  const session = SessionContext.useContext();
 
   async function signIn(ev: FormEvent) {
     ev.preventDefault();
     const result = await api.post("sessions", { email, password });
-    if (!result.ok) {
+    const isStatusOk = result.status >= 200 && result.status <= 299;
+    if (!isStatusOk) {
       alert("Wrong credentials");
       return;
     }

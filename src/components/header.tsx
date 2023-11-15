@@ -1,10 +1,10 @@
 "use client";
 
-import { useSession } from "@/contexts/session";
+import * as SessionContext from "@/contexts/session";
 import Link from "next/link";
 
 export function Header() {
-  const session = useSession();
+  const session = SessionContext.useContext();
   return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
       <Link

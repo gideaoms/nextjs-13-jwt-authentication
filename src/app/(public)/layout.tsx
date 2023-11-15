@@ -1,12 +1,11 @@
 "use client";
 
-import { Header } from "@/components/header";
+import { ReactNode, useEffect, useState } from "react";
 import * as SessionContext from "@/contexts/session";
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
 
 export default function Layout(props: { children: ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { startSession, user } = SessionContext.useContext();
   const router = useRouter();
 
@@ -17,10 +16,10 @@ export default function Layout(props: { children: ReactNode }) {
     }
     startSession({
       onSuccess() {
-        setIsLoading(false);
+        router.replace("/");
       },
       onError() {
-        router.replace("/sign-in");
+        setIsLoading(false);
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,10 +29,5 @@ export default function Layout(props: { children: ReactNode }) {
     return <p>Loading...</p>;
   }
 
-  return (
-    <div>
-      <Header />
-      <div>{props.children}</div>
-    </div>
-  );
+  return props.children;
 }
