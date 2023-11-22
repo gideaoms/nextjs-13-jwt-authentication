@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function Layout(props: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
-  const { startSession, user } = SessionContext.useContext();
+  const { onInit, user } = SessionContext.useContext();
   const router = useRouter();
 
   useEffect(function () {
@@ -14,7 +14,7 @@ export default function Layout(props: { children: ReactNode }) {
       setIsLoading(false);
       return;
     }
-    startSession({
+    onInit({
       onSuccess() {
         router.replace("/");
       },

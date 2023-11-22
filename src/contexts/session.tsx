@@ -11,19 +11,16 @@ const cookie = new Cookie();
 
 const Context = createContext<{
   user: UserModel.Model | null;
-  startSession: (props: { onSuccess: () => void; onError: () => void }) => void;
-  signIn: (user: UserModel.Model) => void;
-  signOut: () => void;
+  onInit(props: { onSuccess(): void; onError(): void }): void;
+  signIn(user: UserModel.Model): void;
+  signOut(): void;
 }>(null!);
 
 export function Provider(props: { children: ReactNode }) {
   const [user, setUser] = useState<UserModel.Model | null>(null);
   const router = useRouter();
 
-  async function startSession(props: {
-    onSuccess: () => void;
-    onError: () => void;
-  }) {
+  async function onInit(props: { onSuccess(): void; onError(): void }) {
     const token = cookie.get("@my-app/token");
     if (!token) {
       props.onError();
@@ -56,7 +53,7 @@ export function Provider(props: { children: ReactNode }) {
   }
 
   return (
-    <Context.Provider value={{ user, startSession, signIn, signOut }}>
+    <Context.Provider value={{ user, onInit, signIn, signOut }}>
       {props.children}
     </Context.Provider>
   );
