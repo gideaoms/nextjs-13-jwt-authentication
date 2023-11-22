@@ -23,7 +23,6 @@ export default function Layout(props: { children: ReactNode }) {
         router.replace("/sign-in");
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {
